@@ -1,39 +1,54 @@
+# Fraud Analysis Agent (FAA)
 
-# Fraud Analysis Agent (FAA) – LLM-Driven Banking Fraud Detection
+## 📌 Overview
+The **Fraud Analysis Agent (FAA)** is a Large Language Model (LLM)-powered fraud detection framework designed to simulate how a human fraud investigator works.  
+Instead of directly classifying a transaction, FAA:
+- Retrieves related transaction history.
+- Analyzes spending patterns.
+- Generates visual plots for anomalies.
+- Produces a human-readable investigation report.
+- Gives a final **Fraud / Not Fraud** verdict with a confidence score.
 
-## 1. Overview
-Banking fraud detection is traditionally approached using machine learning classifiers that operate at the transaction level. While these models can achieve high precision, they often lack **human-like reasoning** and **contextual understanding**.
-
-The **Fraud Analysis Agent (FAA)** addresses this by implementing an **LLM-orchestrated autonomous investigation framework**, inspired by the research paper [Fraud Analysis Agent: An LLM-Orchestrated Autonomous Fraud Investigation Framework](https://arxiv.org/abs/2506.11635).
-
-Instead of simply classifying transactions as “fraud” or “not fraud,” FAA simulates the behavior of a **fraud investigator**—querying databases, plotting transaction histories, analyzing spending patterns, and writing reports before issuing a verdict.
-
----
-
-## 2. Dataset
-
-### Source
-We used the **Sparkov synthetic credit card transaction dataset** generated via the [Sparkov Data Generation GitHub repository](https://github.com/namebrandon/Sparkov_Data_Generation).  
-This dataset is entirely synthetic, meaning it poses no privacy concerns while still reflecting realistic transaction behaviors.
-
-### Dataset Features
-- **Transaction Details**: Amount, date, category, merchant, geolocation.
-- **Customer Information**: Demographics, location, occupation, account profile.
-- **Fraud Labels**: Binary `is_fraud` flag for each transaction.
-- **Variety in Data**: Merchants in certain transactions have `fraud_` prefixes to simulate suspicious actors.
-
-### Why Sparkov?
-- Fully controllable data generation.
-- Scalable for experiments.
-- Well-structured with realistic patterns.
-- Suitable for testing reasoning workflows without exposing sensitive real-world data.
+The project is based on the research paper:  
+[Fraud Analysis Agent: An LLM-Orchestrated Autonomous Fraud Investigation Framework](https://arxiv.org/abs/2506.11635).
 
 ---
 
-## 3. Database Preparation
-To allow the FAA agents to interact efficiently with the dataset, we converted the CSV output from Sparkov into a **SQLite database**.
+## 📂 Dataset
+We use the **Sparkov synthetic credit card transactions dataset**, generated from the GitHub repository:  
+[https://github.com/namebrandon/Sparkov_Data_Generation](https://github.com/namebrandon/Sparkov_Data_Generation)  
 
-**Steps:**
-1. Generate transaction CSVs using Sparkov:
-   ```bash
+This dataset contains:
+- Transaction details (`amount`, `category`, `merchant`, `date`, `location`)
+- Customer details (`ssn`, `cc_num`, `name`, `dob`, `occupation`, `city_pop`, etc.)
+- Fraud indicator (`is_fraud`)
+
+---
+
+## 🛠️ How It Works
+The FAA system is made up of several components:
+
+1. **Orchestrator Agent** – Plans the investigation and decides which tools to use.
+2. **SQL Tool** – Retrieves relevant transaction data from a SQLite database.
+3. **Vision Agent** – Generates plots showing spending patterns and anomalies.
+4. **Report Generation Agent (RGA)** – Creates a natural language investigation report.
+5. **Detective Agent** – Reads the report and outputs the final verdict and confidence score.
+
+---
+
+## 📦 Setup Instructions
+
+## 2. Install Required Packages
+
+From the project root directory, run:
+
+```bash
+pip install -r requirements.txt
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/kaushik66/FAA.git
+cd FAA
    python datagen.py -n 1000 -o synthetic_data 01-01-2025 12-31-2025
+
+
